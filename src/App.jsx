@@ -12,12 +12,25 @@ import confetti from "canvas-confetti"
 
 
 
-const board = Array(9).fill(null);
 
 function App() {
   
-  const [board,setBoard] = useState(Array(9).fill(null));
-  const [turn, setTurn] = useState(TURNS.X)
+  const [board,setBoard] = useState(() => {
+    
+    const boardFromStorage = window.localStorage.getItem('board')
+    return boardFromStorage?
+      JSON.parse(boardFromStorage)
+      :
+      Array(9).fill(null)
+  
+  })
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem('turn')
+    return turnFromStorage ??
+    TURNS.X
+  
+
+  })
   const [winner, setWinner] = useState(null)
 
 
@@ -27,6 +40,10 @@ function App() {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
+
+    window.localStorage.removeItem('board')
+    window.localStorage.removeItem('turn')
+
   }
 
   const checkEndGame = (newBoard) => {
@@ -43,6 +60,8 @@ function App() {
 
     const newTurn = turn == TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
+    window.localStorage.setItem('board', JSON.stringify(newBoard))
+    window.localStorage.setItem('turn', newTurn)
 
     const newWinner = checkWinnerFrom(newBoard)
     if(newWinner){
@@ -56,6 +75,7 @@ function App() {
   return (
     <main className="board">
       <h1>Ta Te Ti</h1>
+      <button onClick={resetGame}>Reset del juego</button>
       <section className="game">
         {
           board.map((square,index) => {
@@ -71,6 +91,7 @@ function App() {
           )
         }
       </section>
+      
       <Turns turn={turn} />
 
       <WinnerModal  winner={winner} resetGame={resetGame}/>

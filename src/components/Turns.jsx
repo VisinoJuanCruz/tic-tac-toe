@@ -1,9 +1,9 @@
 import { TURNS } from "./constants"
 import { Square } from "./Square"
 
-export const Turns = (turn) => {
-    
 
+export const Turns = ({turn}) => {
+    
     return (
     <section className="turn">
         <Square isSelected={turn == TURNS.X}>

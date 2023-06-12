@@ -74,6 +74,7 @@ body {
   border-radius: 10px;
 }
 
+
 .turn .square,
 .winner .square {
   width: 70px;
@@ -84,8 +85,9 @@ body {
 
 .square.is-selected {
   color: #fff;
-  background: #09f;
+  background-color: #09f;
 }
+
 
 .winner {
   position: absolute;
